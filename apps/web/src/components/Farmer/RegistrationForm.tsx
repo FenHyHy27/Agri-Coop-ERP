@@ -30,9 +30,8 @@ export interface RegistrationFormProps {
 }
 
 /**
- * EP-02.4: Presentation and interaction only.
- * The API request, full client-side validation, and user notifications belong
- * to EP-02.5 and EP-02.6. The parent handles onSubmit errors.
+ * EP-02.4/02.6: Registration form with client-side validation.
+ * API requests, notifications, and navigation are handled by RegisterPage.
  */
 export function RegistrationForm({
   onSubmit,
@@ -94,7 +93,13 @@ export function RegistrationForm({
             <Form.Item
               name="fullName"
               label="Họ và tên"
-              rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
+              rules={[
+                {
+                  required: true,
+                  whitespace: true,
+                  message: "Vui lòng nhập họ và tên",
+                },
+              ]}
             >
               <Input
                 size="large"
@@ -107,7 +112,10 @@ export function RegistrationForm({
             <Form.Item
               name="email"
               label="Email"
-              rules={[{ required: true, message: "Vui lòng nhập email" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập email" },
+                { type: "email", message: "Email không hợp lệ" },
+              ]}
             >
               <Input
                 size="large"
@@ -124,7 +132,14 @@ export function RegistrationForm({
             <Form.Item
               name="password"
               label="Mật khẩu"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu" },
+                { min: 8, message: "Mật khẩu phải có ít nhất 8 ký tự" },
+                {
+                  pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+                  message: "Mật khẩu phải có chữ hoa, chữ thường và chữ số",
+                },
+              ]}
             >
               <Input.Password
                 size="large"
@@ -137,8 +152,19 @@ export function RegistrationForm({
             <Form.Item
               name="confirmPassword"
               label="Xác nhận mật khẩu"
+              dependencies={["password"]}
               rules={[
                 { required: true, message: "Vui lòng xác nhận mật khẩu" },
+                ({ getFieldValue }) => ({
+                  validator(_, value: string | undefined) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error("Mật khẩu xác nhận không khớp"),
+                    );
+                  },
+                }),
               ]}
             >
               <Input.Password
@@ -159,6 +185,10 @@ export function RegistrationForm({
               label="Số điện thoại"
               rules={[
                 { required: true, message: "Vui lòng nhập số điện thoại" },
+                {
+                  pattern: /^0[35789]\d{8}$/,
+                  message: "Số điện thoại phải gồm 10 chữ số với đầu số hợp lệ",
+                },
               ]}
             >
               <Input
@@ -173,7 +203,15 @@ export function RegistrationForm({
             <Form.Item
               name="capacity"
               label="Quy mô chuồng trại (số con tối đa)"
-              rules={[{ required: true, message: "Vui lòng nhập quy mô" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập quy mô" },
+                {
+                  type: "number",
+                  min: 1,
+                  max: 2147483647,
+                  message: "Quy mô phải từ 1 đến 2147483647",
+                },
+              ]}
             >
               <InputNumber
                 size="large"
@@ -191,7 +229,11 @@ export function RegistrationForm({
           name="farmLocation"
           label="Địa chỉ trang trại"
           rules={[
-            { required: true, message: "Vui lòng nhập địa chỉ trang trại" },
+            {
+              required: true,
+              whitespace: true,
+              message: "Vui lòng nhập địa chỉ trang trại",
+            },
           ]}
         >
           <Input.TextArea
