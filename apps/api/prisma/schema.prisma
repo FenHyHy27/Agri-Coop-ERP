@@ -1,6 +1,3 @@
-// Prisma schema for Agri-Coop-ERP
-// Foundation setup - Business models will be introduced in Milestone 1 per specifications.
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,55 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// -------------------------------------------------
+// Enums
+// -------------------------------------------------
+enum UserRole {
+  ADMIN
+  FARMER
+  VET
+}
+
+enum FarmerProfileStatus {
+  INCOMPLETE
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+// -------------------------------------------------
+// Models
+// -------------------------------------------------
+model User {
+  id           String   @id @default(uuid()) @map("id")
+  email        String   @unique @map("email")
+  passwordHash String?  @map("password_hash")
+  fullName     String   @map("full_name")
+  role         UserRole @default(FARMER) @map("role")
+  googleSub    String?  @unique @map("google_sub")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  farmerProfile FarmerProfile? @relation("UserFarmerProfile")
+
+  @@map("users")
+}
+
+model FarmerProfile {
+  id           String              @id @default(uuid()) @map("id")
+  userId       String              @unique @map("user_id")
+  user         User                @relation("UserFarmerProfile", fields: [userId], references: [id], onDelete: Restrict)
+  phone        String              @unique @map("phone")
+  farmLocation String              @map("farm_location")
+  capacity     Int                 @map("capacity")
+  status       FarmerProfileStatus @default(INCOMPLETE) @map("status")
+  joinDate     DateTime?           @map("join_date")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  @@map("farmer_profiles")
 }

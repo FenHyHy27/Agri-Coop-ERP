@@ -90,8 +90,6 @@ export class CreateFarmerDto {
   @IsNotEmpty({ message: 'Capacity is required' })
   @IsInt({ message: 'Capacity must be an integer' })
   @Min(1, { message: 'Capacity must be at least 1' })
-  @Max(Number.MAX_SAFE_INTEGER, {
-    message: `Capacity must not exceed ${Number.MAX_SAFE_INTEGER}`,
-  })
+  @Max(2147483647, { message: 'Capacity must not exceed 2147483647' })
   capacity!: number;
 }
