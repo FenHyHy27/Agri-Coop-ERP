@@ -1,39 +1,52 @@
-import React from 'react';
-import { Layout, Typography, Card, Space, Tag, Row, Col } from 'antd';
+import React from "react";
+import { Layout, Typography, Card, Space, Tag, Row, Col, Button } from "antd";
+import { Link, Route, Routes } from "react-router-dom";
+import RegisterPage, { RegistrationSuccessPage } from "./pages/RegisterPage";
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph, Text } = Typography;
 
-export const App: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
-    <Layout style={{ minHeight: '100vh', background: '#f5f7fa' }}>
+    <Layout style={{ minHeight: "100vh", background: "#f5f7fa" }}>
       <Header
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: '#003a8c',
-          padding: '0 24px',
+          display: "flex",
+          alignItems: "center",
+          background: "#003a8c",
+          padding: "0 24px",
         }}
       >
-        <Title level={3} style={{ color: '#ffffff', margin: 0 }}>
+        <Title level={3} style={{ color: "#ffffff", margin: 0 }}>
           Agri-Coop ERP
         </Title>
+        <Link to="/register" style={{ marginLeft: "auto" }}>
+          <Button type="primary">Đăng ký nông hộ</Button>
+        </Link>
       </Header>
 
-      <Content style={{ padding: '40px 24px', maxWidth: 960, margin: '0 auto', width: '100%' }}>
-        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Content
+        style={{
+          padding: "40px 24px",
+          maxWidth: 960,
+          margin: "0 auto",
+          width: "100%",
+        }}
+      >
+        <Space direction="vertical" size="large" style={{ width: "100%" }}>
           <Card
             variant="borderless"
             style={{
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
               borderRadius: 8,
             }}
           >
-            <Title level={2} style={{ color: '#003a8c', marginBottom: 8 }}>
+            <Title level={2} style={{ color: "#003a8c", marginBottom: 8 }}>
               Agri-Coop ERP
             </Title>
             <Paragraph type="secondary" style={{ fontSize: 16 }}>
-              Hệ thống Hoạch định Nguồn lực Doanh nghiệp dành cho Hợp tác xã Chăn nuôi
+              Hệ thống Hoạch định Nguồn lực Doanh nghiệp dành cho Hợp tác xã
+              Chăn nuôi
             </Paragraph>
 
             <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
@@ -78,11 +91,20 @@ export const App: React.FC = () => {
         </Space>
       </Content>
 
-      <Footer style={{ textAlign: 'center', background: 'transparent' }}>
-        Agri-Coop ERP © {new Date().getFullYear()} - Nền tảng Nông nghiệp Số HTX Chăn nuôi
+      <Footer style={{ textAlign: "center", background: "transparent" }}>
+        Agri-Coop ERP © {new Date().getFullYear()} - Nền tảng Nông nghiệp Số HTX
+        Chăn nuôi
       </Footer>
     </Layout>
   );
 };
+
+export const App: React.FC = () => (
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/register" element={<RegisterPage />} />
+    <Route path="/register/success" element={<RegistrationSuccessPage />} />
+  </Routes>
+);
 
 export default App;
