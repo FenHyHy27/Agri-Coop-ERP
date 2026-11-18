@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 
 // Mock window.matchMedia for Ant Design responsive components in jsdom environment
 Object.defineProperty(window, 'matchMedia', {
@@ -7,10 +7,10 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => {}, // Deprecated method for backward compatibility
-    removeListener: () => {}, // Deprecated method for backward compatibility
-    addEventListener: () => {},
-    removeEventListener: () => {},
+    addListener: () => { }, // Deprecated method for backward compatibility
+    removeListener: () => { }, // Deprecated method for backward compatibility
+    addEventListener: () => { },
+    removeEventListener: () => { },
     dispatchEvent: () => false,
   }),
 });
