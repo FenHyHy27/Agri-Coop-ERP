@@ -1,0 +1,31 @@
+{
+  "name": "agri-coop-erp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agri-ERP system for livestock cooperative",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:api": "npm --prefix apps/api run build",
+    "build:web": "npm --prefix apps/web run build",
+    "test": "npm run test --workspaces",
+    "test:api": "npm --prefix apps/api run test",
+    "test:web": "npm --prefix apps/web run test",
+    "lint": "npm run lint --workspaces",
+    "lint:api": "npm --prefix apps/api run lint",
+    "lint:web": "npm --prefix apps/web run lint",
+    "start:api": "npm --prefix apps/api run start:dev",
+    "start:web": "npm --prefix apps/web run dev"
+  },
+  "keywords": [
+    "agri-erp",
+    "cooperative",
+    "nestjs",
+    "react",
+    "prisma"
+  ],
+  "author": "Agri-Coop Engineering Team",
+  "license": "UNLICENSED"
+}
